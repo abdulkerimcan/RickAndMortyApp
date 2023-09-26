@@ -8,9 +8,6 @@
 import Foundation
 
 final class Service {
-    static let shared = Service()
-    
-    private init() {}
     
     func fetch<T: Codable>(endpoint: Endpoints,expecting type: T.Type ,completion: @escaping (Result<T,Error>) -> ()) {
         guard let url = URL(string: ApiURL.getUrl(endpoint: endpoint)) else {
