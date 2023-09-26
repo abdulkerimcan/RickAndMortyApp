@@ -20,6 +20,18 @@ struct Character: Codable {
     let episode: [String]?
     let url: String?
     let created: String?
+    
+    var _name : String {
+        name ?? "N/A"
+    }
+    
+    var _status : String {
+        status?.text ?? "unknown"
+    }
+    
+    var _image: String {
+        image ?? "N/A"
+    }
 }
 
 enum Gender: String, Codable {
