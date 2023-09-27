@@ -7,28 +7,27 @@
 
 import UIKit
 import SnapKit
+import AlamofireImage
 
 final class CharacterCollectionViewCell: UICollectionViewCell {
     static let identifier = "CharacterCollectionViewCell"
     
     private let imageView: UIImageView = {
         let image = UIImageView()
-        image.contentMode = .scaleAspectFit
-        image.backgroundColor = .red
+        image.contentMode = .scaleAspectFill
+        image.clipsToBounds = true
         return image
     }()
     
     private let nameLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 20, weight: .bold)
-        label.backgroundColor = .orange
         return label
     }()
     
     private let statusLabel: UILabel = {
        let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .semibold)
-        label.backgroundColor = .blue
         return label
     }()
     
@@ -73,6 +72,8 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
     func setCell(model: Character) {
         nameLabel.text = model._name
         statusLabel.text = model._status
-        
+        imageView.af.setImage(withURL: URL(string: model._image) ?? URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")!,
+                                                            imageTransition: .crossDissolve(0.8)
+        )
     }
 }
