@@ -6,29 +6,24 @@
 //
 
 import Foundation
+import Alamofire
 
 final class Service {
-    static let shared = Service()
     
-    private init() {}
-    
-    func fetch<T: Codable>(endpoint: Endpoints,expecting type: T.Type ,completion: @escaping (Result<T,Error>) -> ()) {
-        guard let url = URL(string: ApiURL.getUrl(endpoint: endpoint)) else {
-            completion(.failure(URLError(.badURL)))
-            return
-        }
-        ApiManager.shared.execute(url: url) { result in
-            switch result {
-            case .success(let data):
-                do {
-                    let response = try JSONDecoder().decode(T.self, from: data)
-                    completion(.success(response))
-                } catch {
-                    completion(.failure(error))
-                }
-            case .failure(let error):
-                print(String(describing: error))
+    func fetch<T: Codable>(url: String,expecting type: T.Type ,completion: @escaping (Result<T,Error>) -> ()) {
+        AF.request(url,method: .get).validate().responseDecodable(of: T.self) { response in
+            if let error = response.error {
+                completion(.failure(error))
+                return
             }
+            guard let item = response.value else {
+                completion(.failure(AFError.explicitlyCancelled))
+                return
+            }
+            completion(.success(item))
+            
+        
+
         }
     }
 }

@@ -12,32 +12,33 @@ struct Character: Codable {
     let id: Int?
     let name: String?
     let status: Status?
-    let species: Species?
+    let species: String?
     let type: String?
-    let gender: Gender?
+    let gender: String?
     let origin, location: SingleLocation?
     let image: String?
     let episode: [String]?
     let url: String?
     let created: String?
+    
+    var _name : String {
+        name ?? "N/A"
+    }
+    
+    var _status : String {
+        status?.text ?? "unknown"
+    }
+    
+    var _image: String {
+        image ?? "N/A"
+    }
 }
 
-enum Gender: String, Codable {
-    case female = "Female"
-    case male = "Male"
-    case unknown = "unknown"
-}
-
-// MARK: - Location
 struct SingleLocation: Codable {
     let name: String?
     let url: String?
 }
 
-enum Species: String, Codable {
-    case alien = "Alien"
-    case human = "Human"
-}
 
 enum Status: String, Codable {
     case alive = "Alive"
