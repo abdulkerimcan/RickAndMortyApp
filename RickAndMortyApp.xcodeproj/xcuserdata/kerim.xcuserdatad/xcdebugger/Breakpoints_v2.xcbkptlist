@@ -93,8 +93,8 @@
             filePath = "RickAndMortyApp/Utilities/Helpers/UIHelper.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "19"
-            endingLineNumber = "19"
+            startingLineNumber = "117"
+            endingLineNumber = "117"
             landmarkName = "UIHelper"
             landmarkType = "13">
          </BreakpointContent>

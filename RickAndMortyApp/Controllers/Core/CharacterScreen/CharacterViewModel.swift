@@ -12,6 +12,7 @@ protocol CharacterViewModelProtocol {
     func viewDidLoad()
     func fetchInitialCharacters()
     func fetchAdditionalCharacters()
+    func getDetail(index: Int)
 }
 
 final class CharacterViewModel {
@@ -72,4 +73,9 @@ extension CharacterViewModel: CharacterViewModelProtocol {
         view?.configureCollectionView()
         fetchInitialCharacters()
     }
+    
+    func getDetail(index: Int) {
+        view?.navigateToDetail(character: characters[index])
+    }
+    
 }

@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class FooterLoadingCollectionReusableView: UICollectionReusableView {
+final class FooterLoadingCollectionReusableView: UICollectionReusableView {
     static let identifer = "FooterLoadingCollectionReusableView"
     
     private let spinner: UIActivityIndicatorView = {
