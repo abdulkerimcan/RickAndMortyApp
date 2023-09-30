@@ -7,15 +7,15 @@
 
 import Foundation
 
-protocol DetailsViewModelProtocol {
-    var view: DetailsVCProtocol? {get set}
+protocol CharacterDetailsViewModelProtocol {
+    var view: CharacterDetailsVCProtocol? {get set}
     func viewDidLoad()
     func setupSection()
 }
 
-final class DetailsViewModel {
+final class CharacterDetailsViewModel {
     
-    weak var view: DetailsVCProtocol?
+    weak var view: CharacterDetailsVCProtocol?
     private let character: Character!
     var sections: [SectionType] = []
     init(character: Character) {
@@ -26,7 +26,7 @@ final class DetailsViewModel {
 
 
 
-extension DetailsViewModel: DetailsViewModelProtocol {
+extension CharacterDetailsViewModel: CharacterDetailsViewModelProtocol {
     
     func setupSection() {
         sections = [.photo,

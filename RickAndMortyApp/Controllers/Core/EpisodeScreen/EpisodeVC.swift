@@ -11,6 +11,7 @@ import SnapKit
 protocol EpisodeVCProtocol: AnyObject {
     func configureCollectionView()
     func reloadData()
+    func navigateToDetails(episode: Episode)
 }
 final class EpisodeVC: UIViewController {
     lazy var viewModel = EpisodeViewModel()
@@ -42,6 +43,13 @@ extension EpisodeVC: EpisodeVCProtocol {
             self.collectionView.reloadData()
         }
     }
+    
+    func navigateToDetails(episode: Episode) {
+        DispatchQueue.main.async {
+            let detailsVC = EpisodeDetailsVC(episode: episode)
+            self.navigationController?.pushViewController(detailsVC, animated: true)
+        }
+    }
 }
 
 extension EpisodeVC: UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout {
@@ -71,6 +79,10 @@ extension EpisodeVC: UICollectionViewDataSource,UICollectionViewDelegate,UIColle
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
         return CGSize(width: collectionView.frame.width, height: 100)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.getDetail(index: indexPath.item)
     }
 }
 

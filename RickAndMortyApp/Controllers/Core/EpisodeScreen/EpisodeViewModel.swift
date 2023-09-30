@@ -13,6 +13,7 @@ protocol EpisodeViewModelProtocol {
     func viewDidLoad()
     func fetchEpisodes()
     func fetchAdditionalEpisodes()
+    func getDetail(index: Int)
 }
 
 final class EpisodeViewModel {
@@ -68,5 +69,8 @@ extension EpisodeViewModel: EpisodeViewModelProtocol {
     func viewDidLoad() {
         view?.configureCollectionView()
         fetchEpisodes()
+    }
+    func getDetail(index: Int) {
+        view?.navigateToDetails(episode: episodes[index])
     }
 }

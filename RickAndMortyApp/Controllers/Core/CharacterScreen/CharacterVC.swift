@@ -50,7 +50,7 @@ extension CharacterVC: CharacterVCProtocol {
     
     func navigateToDetail(character: Character) {
         DispatchQueue.main.async {
-            let detailVC = DetailsVC(character: character)
+            let detailVC = CharacterDetailsVC(character: character)
             self.navigationController?.pushViewController(detailVC, animated: true)
         }
     }

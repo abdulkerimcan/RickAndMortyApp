@@ -8,15 +8,15 @@
 import UIKit
 import SnapKit
 
-protocol DetailsVCProtocol: AnyObject {
+protocol CharacterDetailsVCProtocol: AnyObject {
     func configureCollectionView()
     
 }
 
-final class DetailsVC: UIViewController {
+final class CharacterDetailsVC: UIViewController {
     private var collectionView: UICollectionView!
     let character: Character
-    private lazy var viewModel = DetailsViewModel(character: character)
+    private lazy var viewModel = CharacterDetailsViewModel(character: character)
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -36,8 +36,7 @@ final class DetailsVC: UIViewController {
     }
 }
 
-extension DetailsVC: DetailsVCProtocol {
-
+extension CharacterDetailsVC: CharacterDetailsVCProtocol {
     
     func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero,collectionViewLayout: UIHelper.createUICollectionViewCompositionalLayout(viewModel: viewModel))
@@ -52,7 +51,7 @@ extension DetailsVC: DetailsVCProtocol {
     }
 }
 
-extension DetailsVC: UICollectionViewDelegate, UICollectionViewDataSource {
+extension CharacterDetailsVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return viewModel.sections.count
     }
