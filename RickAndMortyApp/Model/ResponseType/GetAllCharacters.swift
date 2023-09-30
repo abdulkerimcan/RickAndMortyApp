@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 struct GetAllCharacters: Codable {
     struct Info: Codable {
             let count: Int?
@@ -19,6 +18,4 @@ struct GetAllCharacters: Codable {
         let info: Info
         let results: [Character]
 }
-
-// MARK: - Info
 

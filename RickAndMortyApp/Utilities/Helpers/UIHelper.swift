@@ -17,7 +17,7 @@ enum UIHelper {
         return layout
     }
     
-    static func createUICollectionViewCompositionalLayout(viewModel: DetailsViewModel) -> UICollectionViewCompositionalLayout {
+    static func createUICollectionViewCompositionalLayout(viewModel: CharacterDetailsViewModel) -> UICollectionViewCompositionalLayout {
         let layout = UICollectionViewCompositionalLayout {sectionIndex,_ in
             return createSection(viewModel: viewModel, for: sectionIndex)
         }
@@ -25,7 +25,7 @@ enum UIHelper {
         return layout
     }
     
-    static func createSection(viewModel: DetailsViewModel,for sectionIndex: Int) -> NSCollectionLayoutSection {
+    static func createSection(viewModel: CharacterDetailsViewModel,for sectionIndex: Int) -> NSCollectionLayoutSection {
         
         
         let sectionTypes = viewModel.sections
