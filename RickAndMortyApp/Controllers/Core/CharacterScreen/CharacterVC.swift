@@ -10,27 +10,25 @@ import SnapKit
 
 protocol CharacterVCProtocol: AnyObject {
     func configureCollectionView()
-    func configureSpinner()
+    func navigateToDetail(character: Character)
     func reloadData()
 }
 
 final class CharacterVC: UIViewController {
-    lazy var viewModel = CharacterViewModel()
+    private lazy var viewModel = CharacterViewModel()
     private var collectionView: UICollectionView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Characters"
+        view.backgroundColor = .systemBackground
         viewModel.view = self
         viewModel.viewDidLoad()
     }
 }
 
 extension CharacterVC: CharacterVCProtocol {
-    func configureSpinner() {
-        
-    }
-    
+
     func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero,collectionViewLayout: UIHelper.createLayout())
         view.addSubview(collectionView)
@@ -50,9 +48,16 @@ extension CharacterVC: CharacterVCProtocol {
         }
     }
     
+    func navigateToDetail(character: Character) {
+        DispatchQueue.main.async {
+            let detailVC = DetailsVC(character: character)
+            self.navigationController?.pushViewController(detailVC, animated: true)
+        }
+    }
+    
 }
 
-extension CharacterVC: UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout, UIScrollViewDelegate {
+extension CharacterVC: UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return viewModel.characters.count
     }
@@ -70,13 +75,18 @@ extension CharacterVC: UICollectionViewDataSource, UICollectionViewDelegate,UICo
         footer.startAnimating()
         return footer
     }
+    
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
            return CGSize(width: collectionView.frame.width,
                          height: 100)
-        
-        
        }
     
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        viewModel.getDetail(index: indexPath.item)
+    }
+}
+
+extension CharacterVC: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard !viewModel.isLoadingMore else {
             return

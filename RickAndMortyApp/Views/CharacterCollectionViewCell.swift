@@ -34,7 +34,6 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .secondarySystemBackground
-        contentView.addSubviews(imageView,nameLabel,statusLabel)
         setUI()
     }
     
@@ -50,6 +49,7 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
     }
     
     private func setUI() {
+        contentView.addSubviews(imageView,nameLabel,statusLabel)
         statusLabel.snp.makeConstraints { make in
             make.height.equalTo(30)
             make.left.equalToSuperview().offset(5)

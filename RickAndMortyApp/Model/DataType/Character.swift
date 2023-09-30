@@ -26,11 +26,45 @@ struct Character: Codable {
     }
     
     var _status : String {
-        status?.text ?? "unknown"
+        status?.text ?? "N/A"
     }
     
     var _image: String {
         image ?? "N/A"
+    }
+    
+    var _species: String {
+        species ?? "N/A"
+    }
+    
+    var _type: String {
+        if(type == nil || type!.isEmpty) {
+            return "Typeless"
+        }
+        return type ?? "Typeless"
+    }
+    
+    var _gender: String {
+        gender ?? "N/A"
+    }
+    var _origin: String {
+        origin?.name ?? "N/A"
+    }
+    
+    var _location: String {
+        location?.name ?? "N/A"
+    }
+    var _created: String {
+        let dateFormatterGet = DateFormatter()
+        dateFormatterGet.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+
+        let dateFormatterPrint = DateFormatter()
+        dateFormatterPrint.dateFormat = "dd.MM.yy"
+        guard let date = dateFormatterGet.date(from: created ?? "") else {
+            return "N/A"
+        }
+        let dateString =  dateFormatterPrint.string(from: date)
+        return dateString
     }
 }
 

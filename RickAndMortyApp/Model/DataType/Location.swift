@@ -13,4 +13,6 @@ struct Location: Codable {
     let residents: [String]?
     let url: String?
     let created: String?
+    
+    
 }

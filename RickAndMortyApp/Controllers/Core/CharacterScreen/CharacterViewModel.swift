@@ -12,6 +12,7 @@ protocol CharacterViewModelProtocol {
     func viewDidLoad()
     func fetchInitialCharacters()
     func fetchAdditionalCharacters()
+    func getDetail(index: Int)
 }
 
 final class CharacterViewModel {
@@ -45,7 +46,7 @@ extension CharacterViewModel: CharacterViewModelProtocol {
                 strongSelf.view?.reloadData()
                 strongSelf.isLoadingMore = false
             case .failure(let error):
-                self?.isLoadingMore = false
+                strongSelf.isLoadingMore = false
                 print(String(describing: error))
             }
         }
@@ -59,6 +60,7 @@ extension CharacterViewModel: CharacterViewModelProtocol {
             }
             switch result {
             case .success(let model):
+                print("asaa")
                 strongSelf.characters.append(contentsOf: model.results)
                 strongSelf.apiInfo = model.info
                 strongSelf.view?.reloadData()
@@ -72,4 +74,9 @@ extension CharacterViewModel: CharacterViewModelProtocol {
         view?.configureCollectionView()
         fetchInitialCharacters()
     }
+    
+    func getDetail(index: Int) {
+        view?.navigateToDetail(character: characters[index])
+    }
+    
 }
