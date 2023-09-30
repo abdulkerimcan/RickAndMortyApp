@@ -39,12 +39,12 @@ final class CharacterDetailsVC: UIViewController {
 extension CharacterDetailsVC: CharacterDetailsVCProtocol {
     
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: .zero,collectionViewLayout: UIHelper.createUICollectionViewCompositionalLayout(viewModel: viewModel))
+        collectionView = UICollectionView(frame: .zero,collectionViewLayout: CharacterDetailsHelper.createCharacterCompostionalLayout(viewModel: viewModel))
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(DetailsPhotoCollectionViewCell.self, forCellWithReuseIdentifier: DetailsPhotoCollectionViewCell.identifier)
-        collectionView.register(DetailsInformationCollectionViewCell.self, forCellWithReuseIdentifier: DetailsInformationCollectionViewCell.identifier)
+        collectionView.register(CharacterDetailsPhotoCollectionViewCell.self, forCellWithReuseIdentifier: CharacterDetailsPhotoCollectionViewCell.identifier)
+        collectionView.register(CharacterDetailsInformationCollectionViewCell.self, forCellWithReuseIdentifier: CharacterDetailsInformationCollectionViewCell.identifier)
         collectionView.snp.makeConstraints { make in
             make.left.top.right.bottom.equalToSuperview()
         }
@@ -53,7 +53,7 @@ extension CharacterDetailsVC: CharacterDetailsVCProtocol {
 
 extension CharacterDetailsVC: UICollectionViewDelegate, UICollectionViewDataSource {
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return viewModel.sections.count
+        viewModel.sections.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -72,16 +72,16 @@ extension CharacterDetailsVC: UICollectionViewDelegate, UICollectionViewDataSour
         switch sectionType {
         case .photo:
             guard
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsPhotoCollectionViewCell.identifier
-                                                                , for: indexPath) as? DetailsPhotoCollectionViewCell else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterDetailsPhotoCollectionViewCell.identifier
+                                                                , for: indexPath) as? CharacterDetailsPhotoCollectionViewCell else {
                 fatalError()
             }
             cell.setCell(model: character)
             return cell
         case .information(let infos):
             guard
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsInformationCollectionViewCell.identifier
-                                                                , for: indexPath) as? DetailsInformationCollectionViewCell else {
+                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterDetailsInformationCollectionViewCell.identifier
+                                                                , for: indexPath) as? CharacterDetailsInformationCollectionViewCell else {
                 fatalError()
             }
             cell.setCell(cellModel: infos[indexPath.item])

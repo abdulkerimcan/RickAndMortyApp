@@ -9,7 +9,7 @@ import UIKit
 import AlamofireImage
 import SnapKit
 
-final class DetailsPhotoCollectionViewCell: UICollectionViewCell {
+final class CharacterDetailsPhotoCollectionViewCell: UICollectionViewCell {
     static let identifier = "DetailsPhotoCollectionViewCell"
     
     private let imageView: UIImageView = {

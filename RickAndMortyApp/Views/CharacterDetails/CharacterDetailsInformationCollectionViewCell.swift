@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-final class DetailsInformationCollectionViewCell: UICollectionViewCell {
+final class CharacterDetailsInformationCollectionViewCell: UICollectionViewCell {
     static let identifier = "DetailsInformationCollectionViewCell"
     
     private var valueLabel: UILabel = {
@@ -70,6 +70,6 @@ final class DetailsInformationCollectionViewCell: UICollectionViewCell {
     func setCell(cellModel: CellModel) {
         typeLabel.text = cellModel.type.uppercased()
         valueLabel.text = cellModel.value.uppercased()
-        image.image = UIImage(systemName: cellModel.image)
+        image.image = UIImage(systemName: cellModel.image ?? "bell.fill")
     }
 }

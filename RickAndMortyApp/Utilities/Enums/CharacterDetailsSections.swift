@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SectionType {
+enum CharacterDetailsSections {
     
     case photo
     case information(infos: [CellModel])
