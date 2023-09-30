@@ -6,24 +6,47 @@
 //
 
 import UIKit
+import SnapKit
 
+protocol EpisodeVCProtocol: AnyObject {
+    func configureCollectionView()
+}
 final class EpisodeVC: UIViewController {
-
+    lazy var viewModel = EpisodeViewModel()
+    private var collectionView: UICollectionView!
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Episodes"
-        // Do any additional setup after loading the view.
+        viewModel.view = self
+        viewModel.viewDidLoad()
+    }
+}
+
+extension EpisodeVC: EpisodeVCProtocol {
+    func configureCollectionView() {
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: UIHelper.createLayout())
+        view.addSubview(collectionView)
+        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        collectionView.snp.makeConstraints { make in
+            make.left.top.right.bottom.equalToSuperview()
+        }
+    }
+}
+
+extension EpisodeVC: UICollectionViewDataSource,UICollectionViewDelegate {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 10
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        cell.backgroundColor = .red
+        return cell
     }
-    */
-
 }
+
+

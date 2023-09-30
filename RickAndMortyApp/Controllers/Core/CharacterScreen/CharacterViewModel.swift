@@ -60,7 +60,6 @@ extension CharacterViewModel: CharacterViewModelProtocol {
             }
             switch result {
             case .success(let model):
-                print("asaa")
                 strongSelf.characters.append(contentsOf: model.results)
                 strongSelf.apiInfo = model.info
                 strongSelf.view?.reloadData()

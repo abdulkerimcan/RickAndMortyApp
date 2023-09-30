@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0A6B25402AC8174700EBD9E1 /* EpisodeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6B253F2AC8174700EBD9E1 /* EpisodeViewModel.swift */; };
 		0A955A6E2AC37D030064D6AA /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 0A955A6D2AC37D030064D6AA /* Alamofire */; };
 		0A955A712AC37D270064D6AA /* AlamofireImage in Frameworks */ = {isa = PBXBuildFile; productRef = 0A955A702AC37D270064D6AA /* AlamofireImage */; };
 		0AB62A942AC6C7E800DFCC2A /* CellModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AB62A932AC6C7E800DFCC2A /* CellModel.swift */; };
@@ -41,6 +42,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		0A6B253F2AC8174700EBD9E1 /* EpisodeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeViewModel.swift; sourceTree = "<group>"; };
 		0AB62A932AC6C7E800DFCC2A /* CellModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CellModel.swift; sourceTree = "<group>"; };
 		0ACDF5AD2AC4376600C30827 /* FooterLoadingCollectionReusableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FooterLoadingCollectionReusableView.swift; sourceTree = "<group>"; };
 		0ADDF31D2AC2D17000C8A4A5 /* CharacterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CharacterViewModel.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 			isa = PBXGroup;
 			children = (
 				0AEC98DF2AC20BCA00927FB6 /* EpisodeVC.swift */,
+				0A6B253F2AC8174700EBD9E1 /* EpisodeViewModel.swift */,
 			);
 			path = EpisodeScreen;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				0AE5D8902AC5B40B00F2ADAA /* DetailsInformationCollectionViewCell.swift in Sources */,
 				0AEC98F02AC220DD00927FB6 /* Episode.swift in Sources */,
 				0ADDF32A2AC2F2AC00C8A4A5 /* CharacterCollectionViewCell.swift in Sources */,
+				0A6B25402AC8174700EBD9E1 /* EpisodeViewModel.swift in Sources */,
 				0AE5D88E2AC5B3FA00F2ADAA /* DetailsPhotoCollectionViewCell.swift in Sources */,
 				0ADDF32C2AC2FB3700C8A4A5 /* UIView+Ext.swift in Sources */,
 				0AEC98E72AC216DD00927FB6 /* Service.swift in Sources */,
