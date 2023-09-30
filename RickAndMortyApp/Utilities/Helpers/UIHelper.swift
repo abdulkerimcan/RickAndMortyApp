@@ -34,8 +34,6 @@ enum UIHelper {
             return createPhotoSectionLayout()
         case .information:
             return createInformationSectionLayout()
-        case .episodes:
-            return createEpisodesSectionLayout() 
         }
         
     }
@@ -85,33 +83,6 @@ enum UIHelper {
                     subitems: [item, item]
                 )
                 let section = NSCollectionLayoutSection(group: group)
-                return section
-    }
-    
-    
-    static func createEpisodesSectionLayout() -> NSCollectionLayoutSection {
-        let item = NSCollectionLayoutItem(
-                    layoutSize: NSCollectionLayoutSize(
-                        widthDimension: .fractionalWidth(1.0),
-                        heightDimension: .fractionalHeight(1.0)
-                    )
-                )
-                item.contentInsets = NSDirectionalEdgeInsets(
-                    top: 10,
-                    leading: 5,
-                    bottom: 10,
-                    trailing: 8
-                )
-
-                let group = NSCollectionLayoutGroup.horizontal(
-                    layoutSize:  NSCollectionLayoutSize(
-                        widthDimension: .fractionalWidth(0.8),
-                        heightDimension: .absolute(150)
-                    ),
-                    subitems: [item]
-                )
-                let section = NSCollectionLayoutSection(group: group)
-                section.orthogonalScrollingBehavior = .groupPaging
                 return section
     }
 }

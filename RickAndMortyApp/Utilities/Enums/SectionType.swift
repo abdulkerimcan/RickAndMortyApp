@@ -11,5 +11,4 @@ enum SectionType {
     
     case photo
     case information(infos: [CellModel])
-    case episodes(episodes: String)
 }

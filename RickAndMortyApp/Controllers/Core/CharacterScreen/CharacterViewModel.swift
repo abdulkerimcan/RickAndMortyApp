@@ -46,7 +46,7 @@ extension CharacterViewModel: CharacterViewModelProtocol {
                 strongSelf.view?.reloadData()
                 strongSelf.isLoadingMore = false
             case .failure(let error):
-                self?.isLoadingMore = false
+                strongSelf.isLoadingMore = false
                 print(String(describing: error))
             }
         }
@@ -60,6 +60,7 @@ extension CharacterViewModel: CharacterViewModelProtocol {
             }
             switch result {
             case .success(let model):
+                print("asaa")
                 strongSelf.characters.append(contentsOf: model.results)
                 strongSelf.apiInfo = model.info
                 strongSelf.view?.reloadData()

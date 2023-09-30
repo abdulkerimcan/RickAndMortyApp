@@ -61,7 +61,6 @@ struct Character: Codable {
         let dateFormatterPrint = DateFormatter()
         dateFormatterPrint.dateFormat = "dd.MM.yy"
         guard let date = dateFormatterGet.date(from: created ?? "") else {
-            print("asdadaadadada")
             return "N/A"
         }
         let dateString =  dateFormatterPrint.string(from: date)

@@ -21,6 +21,7 @@ final class DetailsVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = character._name
+        navigationItem.largeTitleDisplayMode = .never
         viewModel.view = self
         viewModel.viewDidLoad()
     }
@@ -45,8 +46,6 @@ extension DetailsVC: DetailsVCProtocol {
         collectionView.delegate = self
         collectionView.register(DetailsPhotoCollectionViewCell.self, forCellWithReuseIdentifier: DetailsPhotoCollectionViewCell.identifier)
         collectionView.register(DetailsInformationCollectionViewCell.self, forCellWithReuseIdentifier: DetailsInformationCollectionViewCell.identifier)
-        
-        collectionView.register(DetailsEpisodesCollectionViewCell.self, forCellWithReuseIdentifier: DetailsEpisodesCollectionViewCell.identifier)
         collectionView.snp.makeConstraints { make in
             make.left.top.right.bottom.equalToSuperview()
         }
@@ -63,8 +62,6 @@ extension DetailsVC: UICollectionViewDelegate, UICollectionViewDataSource {
         switch sectionType {
         case .photo:
             return 1
-        case .episodes(let episodes):
-            return episodes.count
         case .information(let infos):
             return infos.count
         }
@@ -89,14 +86,6 @@ extension DetailsVC: UICollectionViewDelegate, UICollectionViewDataSource {
                 fatalError()
             }
             cell.setCell(cellModel: infos[indexPath.item])
-            return cell
-        case .episodes(let episodes):
-            guard
-                let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsEpisodesCollectionViewCell.identifier
-                                                                , for: indexPath) as? DetailsEpisodesCollectionViewCell else {
-                fatalError()
-            }
-            print(episodes)
             return cell
         }
     }

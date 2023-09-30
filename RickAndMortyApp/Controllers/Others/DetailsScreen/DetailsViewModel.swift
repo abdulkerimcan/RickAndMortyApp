@@ -18,7 +18,6 @@ final class DetailsViewModel {
     weak var view: DetailsVCProtocol?
     private let character: Character!
     var sections: [SectionType] = []
-
     init(character: Character) {
         self.character = character
         setupSection()
@@ -28,6 +27,7 @@ final class DetailsViewModel {
 
 
 extension DetailsViewModel: DetailsViewModelProtocol {
+    
     func setupSection() {
         sections = [.photo,
                                        .information(infos: [
@@ -46,8 +46,7 @@ extension DetailsViewModel: DetailsViewModelProtocol {
                                         .init(type: "Cretead", value: character._created,image: "calendar"),
                                         .init(type: "Episodes", value: "\(character.episode?.count ?? 0)",image: "tv")
                                         
-                                       ]),
-                                       .episodes(episodes: "Sasda")]
+                                       ]),]
 
     }
     

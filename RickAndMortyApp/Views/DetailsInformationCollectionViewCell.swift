@@ -34,7 +34,7 @@ final class DetailsInformationCollectionViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .tertiarySystemBackground
-        contentView.layer.cornerRadius = 100
+        layer.cornerRadius = 10
         
         setUI()
     }
