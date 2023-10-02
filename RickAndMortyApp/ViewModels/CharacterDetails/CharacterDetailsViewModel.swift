@@ -16,8 +16,8 @@ protocol CharacterDetailsViewModelProtocol {
 final class CharacterDetailsViewModel {
     
     weak var view: CharacterDetailsVCProtocol?
-    private let character: Character!
-    var sections: [SectionType] = []
+    private let character: Character
+    var sections: [CharacterDetailsSections] = []
     init(character: Character) {
         self.character = character
         setupSection()
