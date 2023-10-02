@@ -9,5 +9,5 @@ import Foundation
 
 enum EpisodeDetailsSections {
     case information
-    case character
+    case character([EpisodeDetailsCharacterCellViewModel])
 }

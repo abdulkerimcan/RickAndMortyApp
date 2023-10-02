@@ -10,6 +10,7 @@ import Foundation
 protocol EpisodeDetailsViewModelProtocol {
     var view: EpisodeDetailsVCProtocol? {get set}
     func viewDidLoad()
+    func getDetail(character: Character)
 }
 
 final class EpisodeDetailsViewModel {
@@ -25,10 +26,19 @@ final class EpisodeDetailsViewModel {
 }
 
 extension EpisodeDetailsViewModel: EpisodeDetailsViewModelProtocol{
+    func getDetail(character: Character) {
+        view?.navigateCharacterDetails(character: character)
+    }
+    
     func viewDidLoad() {
         view?.configureCollectionView()
     }
     func setupSections() {
-        sections = [.information,.character]
+        guard let characters = episode.characters else {
+            return
+        }
+        sections = [.information,.character(characters.compactMap ({
+            return EpisodeDetailsCharacterCellViewModel(characterUrl: URL(string: $0))
+        }))]
     }
 }

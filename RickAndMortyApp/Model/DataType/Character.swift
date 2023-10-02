@@ -8,15 +8,17 @@
 import Foundation
 
 // MARK: - Result
-struct Character: Codable {
+struct Character: Codable,CharacterDataSender {
+
+    
     let id: Int?
-    let name: String?
+    let name: String
     let status: Status?
     let species: String?
     let type: String?
     let gender: String?
     let origin, location: SingleLocation?
-    let image: String?
+    let image: String
     let episode: [String]?
     let url: String?
     let created: String?
