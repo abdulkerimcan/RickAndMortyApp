@@ -9,8 +9,8 @@ import UIKit
 import SnapKit
 import AlamofireImage
 
-final class EpisodeDetailsCharacterCollectionViewCell: UICollectionViewCell {
-    static let identifier = "EpisodeDetailsCharacterCollectionViewCell"
+final class DetailsCharacterCollectionViewCell: UICollectionViewCell {
+    static let identifier = "DetailsCharacterCollectionViewCell"
     
     private var imageView: UIImageView = {
        let imageView = UIImageView()
@@ -42,19 +42,22 @@ final class EpisodeDetailsCharacterCollectionViewCell: UICollectionViewCell {
     
     func setUI() {
         addSubviews(nameLabel,imageView)
+        layer.cornerRadius = 10
+        clipsToBounds = true
         nameLabel.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.bottom.equalToSuperview().offset(-10)
         }
         
         imageView.snp.makeConstraints { make in
+            make.top.equalToSuperview()
             make.left.right.equalToSuperview()
             make.height.equalTo(100)
             make.bottom.equalTo(nameLabel.snp.top).offset(-10)
         }
     }
     
-    func setCell(viewModel: EpisodeDetailsCharacterCellViewModel) {
+    func setCell(viewModel: DetailsCharacterCellViewModel) {
         viewModel.registerForData { [weak self] data in
                     self?.imageView.af.setImage(withURL: URL(string: data.image) ?? URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")!,
                                                 imageTransition: .crossDissolve(0.8))

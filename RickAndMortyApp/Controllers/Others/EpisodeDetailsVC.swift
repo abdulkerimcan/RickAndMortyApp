@@ -15,7 +15,7 @@ protocol EpisodeDetailsVCProtocol: AnyObject {
 final class EpisodeDetailsVC: UIViewController {
     let episode: Episode
     private var collectionView: UICollectionView!
-    lazy var viewModel = EpisodeDetailsViewModel(episode: episode)
+    private lazy var viewModel = EpisodeDetailsViewModel(episode: episode)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -48,7 +48,7 @@ extension EpisodeDetailsVC: EpisodeDetailsVCProtocol {
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
-        collectionView.register(EpisodeDetailsCharacterCollectionViewCell.self, forCellWithReuseIdentifier: EpisodeDetailsCharacterCollectionViewCell.identifier)
+        collectionView.register(DetailsCharacterCollectionViewCell.self, forCellWithReuseIdentifier: DetailsCharacterCollectionViewCell.identifier)
         collectionView.register(EpisodeDetailsCollectionViewCell.self
                                 , forCellWithReuseIdentifier: EpisodeDetailsCollectionViewCell.identifier)
         
@@ -68,7 +68,6 @@ extension EpisodeDetailsVC: UICollectionViewDelegate, UICollectionViewDataSource
         case .information:
             return 1
         case .character(let viewmodels):
-            print(viewmodels.count)
             return viewmodels.count
         }
     }
@@ -83,7 +82,7 @@ extension EpisodeDetailsVC: UICollectionViewDelegate, UICollectionViewDataSource
             cell.setCell(episode: episode)
             return cell
         case .character(let viewmodels):
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EpisodeDetailsCharacterCollectionViewCell.identifier, for: indexPath) as? EpisodeDetailsCharacterCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsCharacterCollectionViewCell.identifier, for: indexPath) as? DetailsCharacterCollectionViewCell else {
                 fatalError()
             }
             cell.setCell(viewModel: viewmodels[indexPath.item])

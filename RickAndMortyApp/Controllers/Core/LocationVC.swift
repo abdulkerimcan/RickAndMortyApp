@@ -28,7 +28,7 @@ final class LocationVC: UIViewController {
 extension LocationVC: LocationVCProtocol {
     func navigateToDetail(location: Location) {
         DispatchQueue.main.async {
-            let detailsVC = LocationDetailsVC()
+            let detailsVC = LocationDetailsVC(location: location)
             self.navigationController?.pushViewController(detailsVC, animated: true)
         }
     }

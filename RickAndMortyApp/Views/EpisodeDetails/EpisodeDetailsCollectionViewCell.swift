@@ -35,7 +35,6 @@ final class EpisodeDetailsCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        backgroundColor = .tertiarySystemBackground
         setUI()
     }
     override func prepareForReuse() {
@@ -49,6 +48,8 @@ final class EpisodeDetailsCollectionViewCell: UICollectionViewCell {
     }
     
     private func setUI() {
+        layer.cornerRadius = 10
+        backgroundColor = .tertiarySystemBackground
         addSubviews(nameLabel,episodeLabel,dateLabel)
         
         nameLabel.snp.makeConstraints { make in

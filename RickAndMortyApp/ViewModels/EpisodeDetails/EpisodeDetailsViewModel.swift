@@ -11,11 +11,12 @@ protocol EpisodeDetailsViewModelProtocol {
     var view: EpisodeDetailsVCProtocol? {get set}
     func viewDidLoad()
     func getDetail(character: Character)
+    func setupSections()
 }
 
 final class EpisodeDetailsViewModel {
     weak var view: EpisodeDetailsVCProtocol?
-    var sections: [EpisodeDetailsSections] = []
+    var sections: [DetailsSections] = []
     private let episode: Episode
     
     init(episode: Episode) {
@@ -38,7 +39,7 @@ extension EpisodeDetailsViewModel: EpisodeDetailsViewModelProtocol{
             return
         }
         sections = [.information,.character(characters.compactMap ({
-            return EpisodeDetailsCharacterCellViewModel(characterUrl: URL(string: $0))
+            return DetailsCharacterCellViewModel(characterUrl: URL(string: $0))
         }))]
     }
 }
