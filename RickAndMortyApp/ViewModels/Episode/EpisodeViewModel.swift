@@ -18,7 +18,7 @@ protocol EpisodeViewModelProtocol {
 
 final class EpisodeViewModel {
     weak var view: EpisodeVCProtocol?
-    lazy var service = Service()
+    private lazy var service = Service()
     var episodes: [Episode] = []
     var apiInfo: GetAllEpisodes.Info? = nil
     var isLoadingMore = false
