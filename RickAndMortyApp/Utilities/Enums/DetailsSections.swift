@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum EpisodeDetailsSections {
+enum DetailsSections {
     case information
-    case character([EpisodeDetailsCharacterCellViewModel])
+    case character([DetailsCharacterCellViewModel])
 }
