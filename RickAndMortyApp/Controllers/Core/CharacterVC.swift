@@ -98,7 +98,13 @@ extension CharacterVC: UICollectionViewDataSource, UICollectionViewDelegate,UICo
         guard kind == UICollectionView.elementKindSectionFooter,let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FooterLoadingCollectionReusableView.identifer, for: indexPath) as? FooterLoadingCollectionReusableView else {
             return UICollectionReusableView()
         }
-        footer.startAnimating()
+        
+        if viewModel.apiInfo?.next?.isEmpty == nil {
+            footer.stopAnimating()
+            
+        } else{
+            footer.startAnimating()
+        }
         return footer
     }
     

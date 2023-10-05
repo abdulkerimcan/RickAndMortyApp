@@ -14,12 +14,13 @@ final class LocationCollectionViewCell: UICollectionViewCell {
     
     private var nameLabel: UILabel = {
        let label = UILabel()
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
+        label.font = .boldSystemFont(ofSize: 24)
         label.numberOfLines = 0
         return label
     }()
     private var typeLabel: UILabel = {
        let label = UILabel()
+        label.font = .boldSystemFont(ofSize: 18)
         return label
     }()
     
@@ -41,13 +42,14 @@ final class LocationCollectionViewCell: UICollectionViewCell {
         backgroundColor = .tertiarySystemBackground
         contentView.addSubviews(nameLabel,typeLabel)
         
-        nameLabel.snp.makeConstraints { make in
-            make.left.right.equalToSuperview()
+        nameLabel.snp.makeConstraints { make in make.left.equalToSuperview().offset(10)
             make.top.equalToSuperview().offset(10)
+            make.right.equalToSuperview().offset(-10)
         }
         typeLabel.snp.makeConstraints { make in
-            make.centerX.equalToSuperview()
-            make.bottom.equalToSuperview().offset(-10)
+            make.left.equalTo(nameLabel)
+            make.bottom.equalToSuperview().offset(-30)
+            make.right.equalToSuperview()
         }
     }
     func setCell(location: Location) {

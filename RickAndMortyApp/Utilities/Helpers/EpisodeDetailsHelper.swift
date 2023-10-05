@@ -42,7 +42,7 @@ enum EpisodeDetailsHelper {
                 let group = NSCollectionLayoutGroup.vertical(
                     layoutSize:  NSCollectionLayoutSize(
                         widthDimension: .fractionalWidth(1.0),
-                        heightDimension: .fractionalHeight(0.5)
+                        heightDimension: .fractionalHeight(0.2)
                     ),
                     subitems: [item]
                 )

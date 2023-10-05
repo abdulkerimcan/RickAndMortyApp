@@ -17,7 +17,6 @@ final class LocationDetailsCollectionViewCell: UICollectionViewCell {
     }()
     private var typeLabel: UILabel = {
        let label = UILabel()
-        
         return label
     }()
     private var dimensionLabel: UILabel = {

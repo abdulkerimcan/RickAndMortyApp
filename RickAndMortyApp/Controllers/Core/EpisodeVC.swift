@@ -99,6 +99,7 @@ extension EpisodeVC: UICollectionViewDataSource,UICollectionViewDelegate,UIColle
         guard kind == UICollectionView.elementKindSectionFooter,let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FooterLoadingCollectionReusableView.identifer, for: indexPath) as? FooterLoadingCollectionReusableView else {
             return UICollectionReusableView()
         }
+        
         if viewModel.apiInfo?.next?.isEmpty == nil {
             footer.stopAnimating()
             
