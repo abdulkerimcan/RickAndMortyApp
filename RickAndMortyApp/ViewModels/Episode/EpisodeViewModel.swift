@@ -11,9 +11,12 @@ import Alamofire
 protocol EpisodeViewModelProtocol {
     var view: EpisodeVCProtocol? {get set}
     func viewDidLoad()
-    func fetchEpisodes()
+    func fetchInitialEpisodes()
     func fetchAdditionalEpisodes()
     func getDetail(index: Int)
+    func showSearchButton(shouldShow: Bool)
+    func makeSearch(shouldShow: Bool)
+    func searchEpisode(searchText: String)
 }
 
 final class EpisodeViewModel {
@@ -25,7 +28,32 @@ final class EpisodeViewModel {
 }
 
 extension EpisodeViewModel: EpisodeViewModelProtocol {
-    func fetchEpisodes() {
+    func showSearchButton(shouldShow: Bool) {
+        view?.showSearchButton(shouldShow: shouldShow)
+    }
+    
+    func makeSearch(shouldShow: Bool) {
+        view?.makeSearch(shouldShow: shouldShow)
+    }
+    
+    func searchEpisode(searchText: String) {
+        let url = "\(ApiURL.getUrl(endpoint: .episode))/?name=\(searchText)"
+        service.fetch(url: url, expecting: GetAllEpisodes.self) {[weak self] result in
+            guard let self = self else {return}
+            switch result {
+            case .success(let success):
+                self.episodes = success.results
+                self.apiInfo = success.info
+                self.view?.reloadData()
+            case .failure(let failure):
+                self.episodes.removeAll()
+                self.view?.reloadData()
+                print(String(describing: failure))
+            }
+        }
+    }
+    
+    func fetchInitialEpisodes() {
         let url = ApiURL.getUrl(endpoint: .episode)
         service.fetch(url: url, expecting: GetAllEpisodes.self) { [weak self] result in
             guard let self = self else {
@@ -33,9 +61,9 @@ extension EpisodeViewModel: EpisodeViewModelProtocol {
             }
             switch result {
             case .success(let model):
-                self.episodes.append(contentsOf: model.results)
-                self.view?.reloadData()
+                self.episodes = model.results
                 self.apiInfo = model.info
+                self.view?.reloadData()
             case .failure(let error):
                 print(String(describing: error))
             }
@@ -67,8 +95,9 @@ extension EpisodeViewModel: EpisodeViewModelProtocol {
         }
     }
     func viewDidLoad() {
+        view?.configureUI()
         view?.configureCollectionView()
-        fetchEpisodes()
+        fetchInitialEpisodes()
     }
     func getDetail(index: Int) {
         view?.navigateToDetails(episode: episodes[index])

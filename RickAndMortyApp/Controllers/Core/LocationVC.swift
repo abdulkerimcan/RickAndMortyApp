@@ -12,20 +12,49 @@ protocol LocationVCProtocol: AnyObject {
     func configureCollectionView()
     func reloadData()
     func navigateToDetail(location: Location)
+    func configureUI()
+    func showSearchButton(shouldShow: Bool)
+    func makeSearch(shouldShow: Bool)
 }
 final class LocationVC: UIViewController {
-
+    private let searchBar = UISearchBar()
     private var collectionView: UICollectionView!
     private lazy var viewModel = LocationViewModel()
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Locations"
         viewModel.view = self
         viewModel.viewDidLoad()
+    }
+    
+    @objc func handleShowSearchBar() {
+        viewModel.makeSearch(shouldShow: true)
+        searchBar.becomeFirstResponder()
     }
 }
 
 extension LocationVC: LocationVCProtocol {
+    func configureUI() {
+        title = "Locations"
+        view.backgroundColor = .systemBackground
+        searchBar.sizeToFit()
+        searchBar.delegate = self
+        viewModel.showSearchButton(shouldShow: true)
+    }
+    
+    func showSearchButton(shouldShow: Bool) {
+        if shouldShow {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
+    
+    func makeSearch(shouldShow: Bool) {
+        viewModel.showSearchButton(shouldShow: !shouldShow)
+        searchBar.showsCancelButton = shouldShow
+        navigationItem.titleView = shouldShow ? searchBar : nil
+    }
+    
     func navigateToDetail(location: Location) {
         DispatchQueue.main.async {
             let detailsVC = LocationDetailsVC(location: location)
@@ -106,5 +135,16 @@ extension LocationVC: UIScrollViewDelegate {
                    }
                    t.invalidate()
                }
+    }
+}
+
+extension LocationVC: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.makeSearch(shouldShow: false)
+        searchBar.text = nil
+        viewModel.fetchInitialLocations()
+    }
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchLocation(searchText: searchText)
     }
 }
