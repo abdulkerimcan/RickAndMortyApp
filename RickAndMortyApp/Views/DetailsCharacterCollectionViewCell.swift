@@ -40,7 +40,7 @@ final class DetailsCharacterCollectionViewCell: UICollectionViewCell {
         nameLabel.text = nil
     }
     
-    func setUI() {
+    private func setUI() {
         addSubviews(nameLabel,imageView)
         layer.cornerRadius = 10
         clipsToBounds = true

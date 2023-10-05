@@ -40,7 +40,7 @@ final class CharacterDetailsPhotoCollectionViewCell: UICollectionViewCell {
     }
     
     func setCell(model: Character) {
-        imageView.af.setImage(withURL: URL(string: model._image) ?? URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")!,
+        imageView.af.setImage(withURL: URL(string: model.image) ?? URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")!,
                                                             imageTransition: .crossDissolve(0.8))
     }
 }

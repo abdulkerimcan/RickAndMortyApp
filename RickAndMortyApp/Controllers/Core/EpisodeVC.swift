@@ -104,5 +104,3 @@ extension EpisodeVC: UIScrollViewDelegate {
                }
     }
 }
-
-

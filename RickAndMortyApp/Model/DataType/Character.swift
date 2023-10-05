@@ -23,16 +23,8 @@ struct Character: Codable,CharacterDataSender {
     let url: String?
     let created: String?
     
-    var _name : String {
-        name ?? "N/A"
-    }
-    
     var _status : String {
         status?.text ?? "N/A"
-    }
-    
-    var _image: String {
-        image ?? "N/A"
     }
     
     var _species: String {

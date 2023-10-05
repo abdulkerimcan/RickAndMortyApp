@@ -12,22 +12,48 @@ protocol CharacterVCProtocol: AnyObject {
     func configureCollectionView()
     func navigateToDetail(character: Character)
     func reloadData()
+    func configureUI()
+    func showSearchButton(shouldShow: Bool)
+    func makeSearch(shouldShow: Bool)
 }
 
 final class CharacterVC: UIViewController {
     private lazy var viewModel = CharacterViewModel()
     private var collectionView: UICollectionView!
-    
+    private let searchBar = UISearchBar()
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Characters"
-        view.backgroundColor = .systemBackground
         viewModel.view = self
         viewModel.viewDidLoad()
+    }
+    
+    
+    @objc func handleShowSearchBar() {
+        viewModel.makeSearch(shouldShow: true)
+        searchBar.becomeFirstResponder()
     }
 }
 
 extension CharacterVC: CharacterVCProtocol {
+    func configureUI() {
+        title = "Characters"
+        view.backgroundColor = .systemBackground
+        searchBar.sizeToFit()
+        searchBar.delegate = self
+        viewModel.showSearchButton(shouldShow: true)
+    }
+    func makeSearch(shouldShow: Bool) {
+        viewModel.showSearchButton(shouldShow: !shouldShow)
+        searchBar.showsCancelButton = shouldShow
+        navigationItem.titleView = shouldShow ? searchBar : nil
+    }
+    func showSearchButton(shouldShow: Bool) {
+        if shouldShow {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
+        } else {
+            navigationItem.rightBarButtonItem = nil
+        }
+    }
 
     func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero,collectionViewLayout: UIHelper.createLayout())
@@ -102,5 +128,17 @@ extension CharacterVC: UIScrollViewDelegate {
                    }
                    t.invalidate()
                }
+    }
+}
+
+extension CharacterVC: UISearchBarDelegate {
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        viewModel.makeSearch(shouldShow: false)
+        searchBar.text = nil
+        viewModel.fetchInitialCharacters()
+    }
+    
+    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+        viewModel.searchCharacter(searchText: searchText)
     }
 }

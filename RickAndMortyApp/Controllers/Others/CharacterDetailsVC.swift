@@ -20,7 +20,7 @@ final class CharacterDetailsVC: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = character._name
+        title = character.name
         navigationItem.largeTitleDisplayMode = .never
         viewModel.view = self
         viewModel.viewDidLoad()
