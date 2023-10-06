@@ -13,8 +13,8 @@ protocol CharacterVCProtocol: AnyObject {
     func navigateToDetail(character: Character)
     func reloadData()
     func configureUI()
-    func showSearchButton(shouldShow: Bool)
-    func makeSearch(shouldShow: Bool)
+    func showSearchBar()
+    func hideSearchBar()
 }
 
 final class CharacterVC: UIViewController {
@@ -29,31 +29,31 @@ final class CharacterVC: UIViewController {
     
     
     @objc func handleShowSearchBar() {
-        viewModel.makeSearch(shouldShow: true)
+        viewModel.makeSearch()
         searchBar.becomeFirstResponder()
     }
 }
 
 extension CharacterVC: CharacterVCProtocol {
+    
+    func showSearchBar() {
+        navigationItem.rightBarButtonItem = nil
+        searchBar.showsCancelButton = viewModel.shouldShowSearchBar
+        navigationItem.titleView = searchBar
+    }
+    
+    func hideSearchBar() {
+        navigationItem.titleView = nil
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
+    }
+    
     func configureUI() {
         title = "Characters"
         view.backgroundColor = .systemBackground
         searchBar.sizeToFit()
         searchBar.delegate = self
-        viewModel.showSearchButton(shouldShow: true)
     }
-    func makeSearch(shouldShow: Bool) {
-        viewModel.showSearchButton(shouldShow: !shouldShow)
-        searchBar.showsCancelButton = shouldShow
-        navigationItem.titleView = shouldShow ? searchBar : nil
-    }
-    func showSearchButton(shouldShow: Bool) {
-        if shouldShow {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
-    }
+    
 
     func configureCollectionView() {
         collectionView = UICollectionView(frame: .zero,collectionViewLayout: UIHelper.createLayout())
@@ -139,7 +139,7 @@ extension CharacterVC: UIScrollViewDelegate {
 
 extension CharacterVC: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        viewModel.makeSearch(shouldShow: false)
+        viewModel.cancelButtonClicked()
         searchBar.text = nil
         viewModel.fetchInitialCharacters()
     }

@@ -9,13 +9,14 @@ import Foundation
 
 protocol CharacterViewModelProtocol {
     var view: CharacterVCProtocol? {get set}
+    var shouldShowSearchBar: Bool {get set}
     func viewDidLoad()
     func fetchInitialCharacters()
     func fetchAdditionalCharacters()
     func getDetail(index: Int)
     func searchCharacter(searchText: String)
-    func showSearchButton(shouldShow: Bool)
-    func makeSearch(shouldShow: Bool)
+    func makeSearch()
+    func cancelButtonClicked()
 }
 
 final class CharacterViewModel {
@@ -24,16 +25,19 @@ final class CharacterViewModel {
     var apiInfo: GetAllCharacters.Info? = nil
     var characters: [Character] = []
     var isLoadingMore = false
+    var shouldShowSearchBar: Bool = false
     
 }
 
 extension CharacterViewModel: CharacterViewModelProtocol {
-    func makeSearch(shouldShow: Bool) {
-        view?.makeSearch(shouldShow: shouldShow)
+    func cancelButtonClicked() {
+        shouldShowSearchBar = false
+        view?.hideSearchBar()
     }
     
-    func showSearchButton(shouldShow: Bool) {
-        view?.showSearchButton(shouldShow: shouldShow)
+    func makeSearch() {
+        shouldShowSearchBar = true
+        view?.showSearchBar()
     }
     
     func searchCharacter(searchText: String) {
@@ -100,11 +104,11 @@ extension CharacterViewModel: CharacterViewModelProtocol {
     func viewDidLoad() {
         view?.configureUI()
         view?.configureCollectionView()
+        view?.hideSearchBar()
         fetchInitialCharacters()
     }
     
     func getDetail(index: Int) {
         view?.navigateToDetail(character: characters[index])
     }
-    
 }

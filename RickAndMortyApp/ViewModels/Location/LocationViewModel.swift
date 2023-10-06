@@ -9,13 +9,13 @@ import Foundation
 
 protocol LocationViewModelProtocol {
     var view: LocationVCProtocol? { get set }
+    var shouldShowSearchBar: Bool {get set}
     func viewDidLoad()
     func fetchInitialLocations()
     func fetchAdditionalLocations()
     func getDetail(index: Int)
-    func showSearchButton(shouldShow: Bool)
-    func makeSearch(shouldShow: Bool)
-    func searchLocation(searchText: String)
+    func makeSearch()
+    func cancelButtonClicked()
     
 }
 
@@ -25,15 +25,18 @@ final class LocationViewModel {
     var locations: [Location] = []
     var apiInfo: GetAllLocations.Info? = nil
     var isLoadingMore = false
+    var shouldShowSearchBar: Bool = false
 }
 
 extension LocationViewModel: LocationViewModelProtocol {
-    func showSearchButton(shouldShow: Bool) {
-        view?.showSearchButton(shouldShow: shouldShow)
+    func cancelButtonClicked() {
+        shouldShowSearchBar = false
+        view?.hideSearchBar()
     }
     
-    func makeSearch(shouldShow: Bool) {
-        view?.makeSearch(shouldShow: shouldShow)
+    func makeSearch() {
+         shouldShowSearchBar = true
+         view?.showSearchBar()
     }
     
     func searchLocation(searchText: String) {
@@ -103,6 +106,7 @@ extension LocationViewModel: LocationViewModelProtocol {
     func viewDidLoad() {
         view?.configureUI()
         view?.configureCollectionView()
+        view?.hideSearchBar()
         fetchInitialLocations()
     }
 }

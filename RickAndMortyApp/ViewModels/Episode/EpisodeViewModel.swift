@@ -10,13 +10,14 @@ import Alamofire
 
 protocol EpisodeViewModelProtocol {
     var view: EpisodeVCProtocol? {get set}
+    var shouldShowSearchBar: Bool {get set}
     func viewDidLoad()
     func fetchInitialEpisodes()
     func fetchAdditionalEpisodes()
     func getDetail(index: Int)
-    func showSearchButton(shouldShow: Bool)
-    func makeSearch(shouldShow: Bool)
     func searchEpisode(searchText: String)
+    func makeSearch()
+    func cancelButtonClicked()
 }
 
 final class EpisodeViewModel {
@@ -25,15 +26,17 @@ final class EpisodeViewModel {
     var episodes: [Episode] = []
     var apiInfo: GetAllEpisodes.Info? = nil
     var isLoadingMore = false
+    var shouldShowSearchBar: Bool = false
 }
 
 extension EpisodeViewModel: EpisodeViewModelProtocol {
-    func showSearchButton(shouldShow: Bool) {
-        view?.showSearchButton(shouldShow: shouldShow)
+    func cancelButtonClicked() {
+        shouldShowSearchBar = false
+        view?.hideSearchBar()
     }
-    
-    func makeSearch(shouldShow: Bool) {
-        view?.makeSearch(shouldShow: shouldShow)
+    func makeSearch() {
+        shouldShowSearchBar = true
+        view?.showSearchBar()
     }
     
     func searchEpisode(searchText: String) {
@@ -97,6 +100,7 @@ extension EpisodeViewModel: EpisodeViewModelProtocol {
     func viewDidLoad() {
         view?.configureUI()
         view?.configureCollectionView()
+        view?.hideSearchBar()
         fetchInitialEpisodes()
     }
     func getDetail(index: Int) {

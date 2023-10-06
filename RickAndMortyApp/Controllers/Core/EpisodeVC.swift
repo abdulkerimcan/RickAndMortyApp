@@ -13,8 +13,8 @@ protocol EpisodeVCProtocol: AnyObject {
     func reloadData()
     func navigateToDetails(episode: Episode)
     func configureUI()
-    func showSearchButton(shouldShow: Bool)
-    func makeSearch(shouldShow: Bool)
+    func showSearchBar()
+    func hideSearchBar()
 }
 final class EpisodeVC: UIViewController {
     private let searchBar = UISearchBar()
@@ -27,32 +27,28 @@ final class EpisodeVC: UIViewController {
         viewModel.viewDidLoad()
     }
     @objc func handleShowSearchBar() {
-        viewModel.makeSearch(shouldShow: true)
+        viewModel.makeSearch()
         searchBar.becomeFirstResponder()
     }
 }
 
 extension EpisodeVC: EpisodeVCProtocol {
+    func showSearchBar() {
+        navigationItem.rightBarButtonItem = nil
+        searchBar.showsCancelButton = viewModel.shouldShowSearchBar
+        navigationItem.titleView = searchBar
+    }
+    
+    func hideSearchBar() {
+        navigationItem.titleView = nil
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
+    }
+    
     func configureUI() {
         view.backgroundColor = .systemBackground
         title = "Episodes"
         searchBar.sizeToFit()
         searchBar.delegate = self
-        viewModel.showSearchButton(shouldShow: true)
-    }
-    
-    func showSearchButton(shouldShow: Bool) {
-        if shouldShow {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
-    }
-    
-    func makeSearch(shouldShow: Bool) {
-        viewModel.showSearchButton(shouldShow: !shouldShow)
-        searchBar.showsCancelButton = shouldShow
-        navigationItem.titleView = shouldShow ? searchBar : nil
     }
     
     func configureCollectionView() {
@@ -138,7 +134,7 @@ extension EpisodeVC: UIScrollViewDelegate {
 
 extension EpisodeVC: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        viewModel.makeSearch(shouldShow: false)
+        viewModel.cancelButtonClicked()
         searchBar.text = nil
         viewModel.fetchInitialEpisodes()
     }

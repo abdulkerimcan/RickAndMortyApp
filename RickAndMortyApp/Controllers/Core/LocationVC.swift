@@ -13,8 +13,8 @@ protocol LocationVCProtocol: AnyObject {
     func reloadData()
     func navigateToDetail(location: Location)
     func configureUI()
-    func showSearchButton(shouldShow: Bool)
-    func makeSearch(shouldShow: Bool)
+    func showSearchBar()
+    func hideSearchBar()
 }
 final class LocationVC: UIViewController {
     private let searchBar = UISearchBar()
@@ -27,32 +27,29 @@ final class LocationVC: UIViewController {
     }
     
     @objc func handleShowSearchBar() {
-        viewModel.makeSearch(shouldShow: true)
+        viewModel.makeSearch()
         searchBar.becomeFirstResponder()
     }
 }
 
 extension LocationVC: LocationVCProtocol {
+    
+    func showSearchBar() {
+        navigationItem.rightBarButtonItem = nil
+        searchBar.showsCancelButton = viewModel.shouldShowSearchBar
+        navigationItem.titleView = searchBar
+    }
+    
+    func hideSearchBar() {
+        navigationItem.titleView = nil
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
+    }
+    
     func configureUI() {
         title = "Locations"
         view.backgroundColor = .systemBackground
         searchBar.sizeToFit()
         searchBar.delegate = self
-        viewModel.showSearchButton(shouldShow: true)
-    }
-    
-    func showSearchButton(shouldShow: Bool) {
-        if shouldShow {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(handleShowSearchBar))
-        } else {
-            navigationItem.rightBarButtonItem = nil
-        }
-    }
-    
-    func makeSearch(shouldShow: Bool) {
-        viewModel.showSearchButton(shouldShow: !shouldShow)
-        searchBar.showsCancelButton = shouldShow
-        navigationItem.titleView = shouldShow ? searchBar : nil
     }
     
     func navigateToDetail(location: Location) {
@@ -140,7 +137,7 @@ extension LocationVC: UIScrollViewDelegate {
 
 extension LocationVC: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        viewModel.makeSearch(shouldShow: false)
+        viewModel.cancelButtonClicked()
         searchBar.text = nil
         viewModel.fetchInitialLocations()
     }
