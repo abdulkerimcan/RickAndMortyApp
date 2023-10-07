@@ -9,19 +9,19 @@ import Foundation
 
 // MARK: - Result
 struct Character: Codable,CharacterDataSender {
-
     
     let id: Int?
     let name: String
-    let status: Status?
-    let species: String?
-    let type: String?
-    let gender: String?
-    let origin, location: SingleLocation?
+    private let status: Status?
+    private let species: String?
+    private let type: String?
+    private let gender: String?
+    private let origin: SingleLocation?
+    private let location: SingleLocation?
     let image: String
     let episode: [String]?
     let url: String?
-    let created: String?
+    private let created: String?
     
     var _status : String {
         status?.text ?? "N/A"

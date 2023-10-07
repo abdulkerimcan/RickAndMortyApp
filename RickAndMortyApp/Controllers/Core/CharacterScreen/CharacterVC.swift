@@ -18,15 +18,24 @@ protocol CharacterVCProtocol: AnyObject {
 }
 
 final class CharacterVC: UIViewController {
-    private lazy var viewModel = CharacterViewModel()
+    private var viewModel: CharacterViewModel
     private var collectionView: UICollectionView!
     private let searchBar = UISearchBar()
+    
+    init(viewModel: CharacterViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.view = self
         viewModel.viewDidLoad()
     }
-    
     
     @objc func handleShowSearchBar() {
         viewModel.makeSearch()
@@ -76,7 +85,7 @@ extension CharacterVC: CharacterVCProtocol {
     
     func navigateToDetail(character: Character) {
         DispatchQueue.main.async {
-            let detailVC = CharacterDetailsVC(character: character)
+            let detailVC = CharacterDetailsVC(viewModel: CharacterDetailsViewModel(character: character))
             self.navigationController?.pushViewController(detailVC, animated: true)
         }
     }

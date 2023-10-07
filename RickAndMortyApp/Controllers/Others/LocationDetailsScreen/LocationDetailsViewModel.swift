@@ -7,6 +7,7 @@
 
 import Foundation
 
+
 protocol LocationDetailsViewModelProtocol {
     var view: LocationDetailsVCProtocol? { get set }
     func viewDidLoad()
@@ -14,10 +15,10 @@ protocol LocationDetailsViewModelProtocol {
     func setupSections()
 }
 
-final class LocationDetailsViewModel {
+final class LocationDetailsViewModel: MainDetailViewModel {
     weak var view: LocationDetailsVCProtocol?
     var sections: [DetailsSections] = []
-    private let location: Location
+    let location: Location
     
     init(location: Location) {
         self.location = location
@@ -35,8 +36,8 @@ extension LocationDetailsViewModel: LocationDetailsViewModelProtocol {
         guard let characters = location.residents else {
             return
         }
-        sections = [.information,.character(characters.compactMap({
-            return DetailsCharacterCellViewModel(characterUrl: URL(string: $0))
+        sections = [.information(infos: nil),.character(characters.compactMap({
+            return LocationDetailsCharacterCellViewModel(characterUrl: URL(string: $0))
         }))]
     }
     

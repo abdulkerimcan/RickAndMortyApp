@@ -7,17 +7,18 @@
 
 import Foundation
 
+
 protocol CharacterDetailsViewModelProtocol {
     var view: CharacterDetailsVCProtocol? {get set}
     func viewDidLoad()
     func setupSection()
 }
 
-final class CharacterDetailsViewModel {
+final class CharacterDetailsViewModel: MainDetailViewModel {
     
     weak var view: CharacterDetailsVCProtocol?
-    private let character: Character
-    var sections: [CharacterDetailsSections] = []
+    let character: Character
+    var sections: [DetailsSections] = []
     init(character: Character) {
         self.character = character
         setupSection()

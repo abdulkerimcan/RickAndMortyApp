@@ -11,19 +11,20 @@ import Alamofire
 final class Service {
     
     func fetch<T: Codable>(url: String,expecting type: T.Type ,completion: @escaping (Result<T,Error>) -> ()) {
+        
         AF.request(url,method: .get).validate().responseDecodable(of: T.self) { response in
+            
             if let error = response.error {
                 completion(.failure(error))
                 return
             }
+            
             guard let item = response.value else {
                 completion(.failure(AFError.explicitlyCancelled))
                 return
             }
-            completion(.success(item))
             
-        
-
+            completion(.success(item))
         }
     }
 }

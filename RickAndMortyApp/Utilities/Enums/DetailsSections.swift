@@ -8,6 +8,7 @@
 import Foundation
 
 enum DetailsSections {
-    case information
-    case character([DetailsCharacterCellViewModel])
+    case photo
+    case information(infos: [CellModel]?)
+    case character([LocationDetailsCharacterCellViewModel]?)
 }

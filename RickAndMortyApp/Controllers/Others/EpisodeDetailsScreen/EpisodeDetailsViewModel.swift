@@ -14,10 +14,10 @@ protocol EpisodeDetailsViewModelProtocol {
     func setupSections()
 }
 
-final class EpisodeDetailsViewModel {
+final class EpisodeDetailsViewModel: MainDetailViewModel {
     weak var view: EpisodeDetailsVCProtocol?
     var sections: [DetailsSections] = []
-    private let episode: Episode
+    let episode: Episode
     
     init(episode: Episode) {
         self.episode = episode
@@ -38,8 +38,8 @@ extension EpisodeDetailsViewModel: EpisodeDetailsViewModelProtocol{
         guard let characters = episode.characters else {
             return
         }
-        sections = [.information,.character(characters.compactMap ({
-            return DetailsCharacterCellViewModel(characterUrl: URL(string: $0))
+        sections = [.information(infos: nil),.character(characters.compactMap ({
+            return LocationDetailsCharacterCellViewModel(characterUrl: URL(string: $0))
         }))]
     }
 }

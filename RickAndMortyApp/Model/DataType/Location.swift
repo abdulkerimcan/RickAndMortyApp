@@ -9,10 +9,12 @@ import Foundation
 
 struct Location: Codable {
     let id: Int?
-    let name, type, dimension: String?
+    private let name:String?
+    private let type : String?
+    private let dimension: String?
     let residents: [String]?
     let url: String?
-    let created: String?
+    private let created: String?
     
     var _name: String {
         name ?? "N/A"

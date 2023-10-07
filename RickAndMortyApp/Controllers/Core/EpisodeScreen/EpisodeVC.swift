@@ -1,5 +1,5 @@
 //
-//  LocationVC.swift
+//  EpisodeVC.swift
 //  RickAndMortyApp
 //
 //  Created by Abdulkerim Can on 25.09.2023.
@@ -8,18 +8,28 @@
 import UIKit
 import SnapKit
 
-protocol LocationVCProtocol: AnyObject {
+protocol EpisodeVCProtocol: AnyObject {
     func configureCollectionView()
     func reloadData()
-    func navigateToDetail(location: Location)
+    func navigateToDetails(episode: Episode)
     func configureUI()
     func showSearchBar()
     func hideSearchBar()
 }
-final class LocationVC: UIViewController {
+final class EpisodeVC: UIViewController {
     private let searchBar = UISearchBar()
+    private var viewModel: EpisodeViewModel
     private var collectionView: UICollectionView!
-    private lazy var viewModel = LocationViewModel()
+    
+    init(viewModel: EpisodeViewModel) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         viewModel.view = self
@@ -32,8 +42,7 @@ final class LocationVC: UIViewController {
     }
 }
 
-extension LocationVC: LocationVCProtocol {
-    
+extension EpisodeVC: EpisodeVCProtocol {
     func showSearchBar() {
         navigationItem.rightBarButtonItem = nil
         searchBar.showsCancelButton = viewModel.shouldShowSearchBar
@@ -46,16 +55,22 @@ extension LocationVC: LocationVCProtocol {
     }
     
     func configureUI() {
-        title = "Locations"
         view.backgroundColor = .systemBackground
+        title = "Episodes"
         searchBar.sizeToFit()
         searchBar.delegate = self
     }
     
-    func navigateToDetail(location: Location) {
-        DispatchQueue.main.async {
-            let detailsVC = LocationDetailsVC(location: location)
-            self.navigationController?.pushViewController(detailsVC, animated: true)
+    func configureCollectionView() {
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: UIHelper.createLayout())
+        view.addSubview(collectionView)
+        collectionView.register(EpisodeCollectionViewCell.self, forCellWithReuseIdentifier: EpisodeCollectionViewCell.identifier)
+        collectionView.register(FooterLoadingCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterLoadingCollectionReusableView.identifer)
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        
+        collectionView.snp.makeConstraints { make in
+            make.left.top.right.bottom.equalToSuperview()
         }
     }
     
@@ -65,32 +80,24 @@ extension LocationVC: LocationVCProtocol {
         }
     }
     
-    func configureCollectionView() {
-        
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: UIHelper.createLayout())
-        view.addSubview(collectionView)
-        
-        collectionView.delegate = self
-        collectionView.dataSource = self
-        collectionView.register(LocationCollectionViewCell.self, forCellWithReuseIdentifier: LocationCollectionViewCell.identifier)
-        collectionView.register(FooterLoadingCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterLoadingCollectionReusableView.identifer)
-        
-        collectionView.snp.makeConstraints { make in
-            make.left.top.right.bottom.equalToSuperview()
+    func navigateToDetails(episode: Episode) {
+        DispatchQueue.main.async {
+            let detailsVC = EpisodeDetailsVC(viewModel: EpisodeDetailsViewModel(episode: episode))
+            self.navigationController?.pushViewController(detailsVC, animated: true)
         }
     }
 }
 
-extension LocationVC: UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout {
+extension EpisodeVC: UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.locations.count
+        return viewModel.episodes.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: LocationCollectionViewCell.identifier, for: indexPath) as! LocationCollectionViewCell
-        let location = viewModel.locations[indexPath.item]
-        cell.setCell(location: location)
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EpisodeCollectionViewCell.identifier, for: indexPath)
+        as! EpisodeCollectionViewCell
+        let episode = viewModel.episodes[indexPath.item]
+        cell.setCell(episode: episode)
         return cell
     }
     
@@ -98,6 +105,7 @@ extension LocationVC: UICollectionViewDataSource,UICollectionViewDelegate,UIColl
         guard kind == UICollectionView.elementKindSectionFooter,let footer = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: FooterLoadingCollectionReusableView.identifer, for: indexPath) as? FooterLoadingCollectionReusableView else {
             return UICollectionReusableView()
         }
+        
         if viewModel.apiInfo?.next?.isEmpty == nil {
             footer.stopAnimating()
             
@@ -107,41 +115,40 @@ extension LocationVC: UICollectionViewDataSource,UICollectionViewDelegate,UIColl
         return footer
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, referenceSizeForFooterInSection section: Int) -> CGSize {
-           return CGSize(width: collectionView.frame.width,
-                         height: 100)
-       }
+        return CGSize(width: collectionView.frame.width, height: 100)
+    }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         viewModel.getDetail(index: indexPath.item)
     }
 }
 
-extension LocationVC: UIScrollViewDelegate {
+extension EpisodeVC: UIScrollViewDelegate {
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
         guard !viewModel.isLoadingMore else {
+            
             return
         }
-        
         Timer.scheduledTimer(withTimeInterval: 0.2, repeats: false) { [weak self] t in
                    let offset = scrollView.contentOffset.y
                    let totalContentHeight = scrollView.contentSize.height
                    let totalScrollViewFixedHeight = scrollView.frame.size.height
 
                    if offset >= (totalContentHeight - totalScrollViewFixedHeight - 120) {
-                       self?.viewModel.fetchAdditionalLocations()
+                       self?.viewModel.fetchAdditionalEpisodes()
                    }
                    t.invalidate()
                }
     }
 }
 
-extension LocationVC: UISearchBarDelegate {
+extension EpisodeVC: UISearchBarDelegate {
     func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         viewModel.cancelButtonClicked()
         searchBar.text = nil
-        viewModel.fetchInitialLocations()
+        viewModel.fetchInitialEpisodes()
     }
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        viewModel.searchLocation(searchText: searchText)
+        viewModel.searchEpisode(searchText: searchText)
     }
 }

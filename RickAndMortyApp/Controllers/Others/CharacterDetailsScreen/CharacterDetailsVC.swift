@@ -15,19 +15,19 @@ protocol CharacterDetailsVCProtocol: AnyObject {
 
 final class CharacterDetailsVC: UIViewController {
     private var collectionView: UICollectionView!
-    let character: Character
-    private lazy var viewModel = CharacterDetailsViewModel(character: character)
+    private var viewModel: CharacterDetailsViewModel
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = character.name
+        title = viewModel.character.name
         navigationItem.largeTitleDisplayMode = .never
         viewModel.view = self
         viewModel.viewDidLoad()
     }
     
-    init(character: Character) {
-        self.character = character
+    init(viewModel: CharacterDetailsViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -39,7 +39,7 @@ final class CharacterDetailsVC: UIViewController {
 extension CharacterDetailsVC: CharacterDetailsVCProtocol {
     
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: .zero,collectionViewLayout: CharacterDetailsHelper.createCharacterCompostionalLayout(viewModel: viewModel))
+        collectionView = UICollectionView(frame: .zero,collectionViewLayout: self.createDetailsCompostionalLayout(viewModel: viewModel))
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -62,7 +62,12 @@ extension CharacterDetailsVC: UICollectionViewDelegate, UICollectionViewDataSour
         case .photo:
             return 1
         case .information(let infos):
+            guard let infos = infos else {
+                return 0
+            }
             return infos.count
+        case .character:
+            return 0
         }
     }
     
@@ -76,16 +81,18 @@ extension CharacterDetailsVC: UICollectionViewDelegate, UICollectionViewDataSour
                                                                 , for: indexPath) as? CharacterDetailsPhotoCollectionViewCell else {
                 fatalError()
             }
-            cell.setCell(model: character)
+            cell.setCell(model: viewModel.character)
             return cell
         case .information(let infos):
             guard
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CharacterDetailsInformationCollectionViewCell.identifier
-                                                                , for: indexPath) as? CharacterDetailsInformationCollectionViewCell else {
+                                                                , for: indexPath) as? CharacterDetailsInformationCollectionViewCell,let infos = infos else {
                 fatalError()
             }
             cell.setCell(cellModel: infos[indexPath.item])
             return cell
+        case .character:
+            fatalError()
         }
     }
 }

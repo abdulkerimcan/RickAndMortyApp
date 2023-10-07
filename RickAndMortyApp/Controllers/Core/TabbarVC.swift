@@ -17,20 +17,11 @@ final class TabbarVC: UITabBarController {
     }
     
     private func setTabs() {
-        let vc1 = CharacterVC()
-        let vc2 = LocationVC()
-        let vc3 = EpisodeVC()
-        let vc4 = SettingsVC()
         
-        vc1.navigationItem.largeTitleDisplayMode = .automatic
-        vc2.navigationItem.largeTitleDisplayMode = .automatic
-        vc3.navigationItem.largeTitleDisplayMode = .automatic
-        vc4.navigationItem.largeTitleDisplayMode = .automatic
-        
-        let nav1 = UINavigationController(rootViewController: vc1)
-        let nav2 = UINavigationController(rootViewController: vc2)
-        let nav3 = UINavigationController(rootViewController: vc3)
-        let nav4 = UINavigationController(rootViewController: vc4)
+        let nav1 = UINavigationController(rootViewController: createCharacterVC())
+        let nav2 = UINavigationController(rootViewController: createLocationVC())
+        let nav3 = UINavigationController(rootViewController: createEpisodeVC())
+        let nav4 = UINavigationController(rootViewController: createSettingVC())
         
         nav1.tabBarItem = UITabBarItem(title: "Character", image: UIImage(systemName: "person"), tag: 1)
         nav2.tabBarItem = UITabBarItem(title: "Locations", image: UIImage(systemName: "globe.europe.africa.fill"), tag: 2)
@@ -44,7 +35,21 @@ final class TabbarVC: UITabBarController {
         }
         
         setViewControllers(navs, animated: true)
-        
+    }
+}
+
+private extension UIViewController {
+    func createCharacterVC() -> CharacterVC {
+        CharacterVC(viewModel: CharacterViewModel(service: Service()))
+    }
+    func createLocationVC() -> LocationVC {
+        LocationVC(viewModel: LocationViewModel(service: Service()))
+    }
+    func createEpisodeVC() -> EpisodeVC {
+        EpisodeVC(viewModel: EpisodeViewModel(service: Service()))
+    }
+    func createSettingVC() -> SettingsVC {
+        SettingsVC()
     }
 }
 
