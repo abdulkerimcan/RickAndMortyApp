@@ -62,7 +62,7 @@ extension EpisodeVC: EpisodeVCProtocol {
     }
     
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: UIHelper.createLayout())
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.createLayout())
         view.addSubview(collectionView)
         collectionView.register(EpisodeCollectionViewCell.self, forCellWithReuseIdentifier: EpisodeCollectionViewCell.identifier)
         collectionView.register(FooterLoadingCollectionReusableView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionFooter, withReuseIdentifier: FooterLoadingCollectionReusableView.identifer)

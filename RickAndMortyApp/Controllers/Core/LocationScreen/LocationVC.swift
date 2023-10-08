@@ -77,7 +77,7 @@ extension LocationVC: LocationVCProtocol {
     
     func configureCollectionView() {
         
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: UIHelper.createLayout())
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.createLayout())
         view.addSubview(collectionView)
         
         collectionView.delegate = self

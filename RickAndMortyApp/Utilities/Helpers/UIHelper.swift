@@ -2,13 +2,13 @@
 //  UIHelper.swift
 //  RickAndMortyApp
 //
-//  Created by Abdulkerim Can on 26.09.2023.
+//  Created by Abdulkerim Can on 8.10.2023.
 //
 
 import UIKit
 
-enum UIHelper {
-    static func createLayout() -> UICollectionViewFlowLayout {
+extension UIViewController {
+    func createLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.sectionInset = UIEdgeInsets(top: 0, left: 10, bottom: 10, right: 10)
