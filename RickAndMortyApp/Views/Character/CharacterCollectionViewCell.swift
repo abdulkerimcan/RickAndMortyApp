@@ -72,7 +72,7 @@ final class CharacterCollectionViewCell: UICollectionViewCell {
     func setCell(model: Character) {
         nameLabel.text = model.name
         statusLabel.text = model._status
-        imageView.af.setImage(withURL: URL(string: model.image) ?? URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")!,
+        imageView.af.setImage(withURL: URL(string: model.image) ?? ApiConstants.shared.constantImageUrl,
                                                             imageTransition: .crossDissolve(0.8)
         )
     }

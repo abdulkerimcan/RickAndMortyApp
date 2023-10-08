@@ -8,9 +8,10 @@
 import UIKit
 
 final class TabbarVC: UITabBarController {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .systemBackground
         
         setTabs()
@@ -18,38 +19,40 @@ final class TabbarVC: UITabBarController {
     
     private func setTabs() {
         
-        let nav1 = UINavigationController(rootViewController: createCharacterVC())
-        let nav2 = UINavigationController(rootViewController: createLocationVC())
-        let nav3 = UINavigationController(rootViewController: createEpisodeVC())
-        let nav4 = UINavigationController(rootViewController: createSettingVC())
-        
-        nav1.tabBarItem = UITabBarItem(title: "Character", image: UIImage(systemName: "person"), tag: 1)
-        nav2.tabBarItem = UITabBarItem(title: "Locations", image: UIImage(systemName: "globe.europe.africa.fill"), tag: 2)
-        nav3.tabBarItem = UITabBarItem(title: "Episodes", image: UIImage(systemName: "tv" ), tag: 3)
-        nav4.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear"), tag: 4)
-        
-        let navs = [nav1,nav2,nav3,nav4]
-        
-        for nav in navs {
-            nav.navigationBar.prefersLargeTitles = true
-        }
+        let navs = [createCharacterVC(),createLocationVC(),createEpisodeVC(),createSettingVC()]
         
         setViewControllers(navs, animated: true)
     }
 }
 
 private extension UIViewController {
-    func createCharacterVC() -> CharacterVC {
-        CharacterVC(viewModel: CharacterViewModel(service: Service()))
+    func createCharacterVC() -> UINavigationController {
+        let characterVC = CharacterVC(viewModel: CharacterViewModel(service: Service()))
+        let nav = UINavigationController(rootViewController: characterVC)
+        nav.tabBarItem = UITabBarItem(title: "Character", image: UIImage(systemName: "person"), tag: 1)
+        nav.navigationBar.prefersLargeTitles = true
+        return nav
     }
-    func createLocationVC() -> LocationVC {
-        LocationVC(viewModel: LocationViewModel(service: Service()))
+    func createLocationVC() -> UINavigationController {
+        let locationVC = LocationVC(viewModel: LocationViewModel(service: Service()))
+        let nav = UINavigationController(rootViewController: locationVC)
+        nav.tabBarItem = UITabBarItem(title: "Locations", image: UIImage(systemName: "globe.europe.africa.fill"), tag: 2)
+        nav.navigationBar.prefersLargeTitles = true
+        return nav
     }
-    func createEpisodeVC() -> EpisodeVC {
-        EpisodeVC(viewModel: EpisodeViewModel(service: Service()))
+    func createEpisodeVC() -> UINavigationController {
+        let episodeVC = EpisodeVC(viewModel: EpisodeViewModel(service: Service()))
+        let nav = UINavigationController(rootViewController: episodeVC)
+        nav.tabBarItem = UITabBarItem(title: "Episodes", image: UIImage(systemName: "tv" ), tag: 3)
+        nav.navigationBar.prefersLargeTitles = true
+        return nav
     }
-    func createSettingVC() -> SettingsVC {
-        SettingsVC()
+    func createSettingVC() -> UINavigationController {
+        let settingsVC = SettingsVC()
+        let nav = UINavigationController(rootViewController: settingsVC)
+        nav.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gear"), tag: 4)
+        nav.navigationBar.prefersLargeTitles = true
+        return nav
     }
 }
 
