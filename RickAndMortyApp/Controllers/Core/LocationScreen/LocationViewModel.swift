@@ -21,11 +21,15 @@ protocol LocationViewModelProtocol {
 
 final class LocationViewModel {
     weak var view: LocationVCProtocol?
-    private lazy var service = Service()
+    private var service: Service
     var locations: [Location] = []
-    var apiInfo: GetAllLocations.Info? = nil
+    var apiInfo: Info? = nil
     var isLoadingMore = false
     var shouldShowSearchBar: Bool = false
+    
+    init(service: Service) {
+        self.service = service
+    }
 }
 
 extension LocationViewModel: LocationViewModelProtocol {
@@ -40,7 +44,7 @@ extension LocationViewModel: LocationViewModelProtocol {
     }
     
     func searchLocation(searchText: String) {
-        let url = "\(ApiURL.getUrl(endpoint: .location))/?name=\(searchText)"
+        let url = "\(ApiConstants.shared.getUrl(endpoint: .location))/?name=\(searchText)"
         service.fetch(url: url, expecting: GetAllLocations.self) {[weak self] result in
             guard let self = self else {return}
             switch result {
@@ -88,7 +92,7 @@ extension LocationViewModel: LocationViewModelProtocol {
     }
     
     func fetchInitialLocations() {
-        let url = ApiURL.getUrl(endpoint: .location)
+        let url = ApiConstants.shared.getUrl(endpoint: .location)
         service.fetch(url: url, expecting: GetAllLocations.self) { [weak self] result in
             guard let self = self else {return}
             

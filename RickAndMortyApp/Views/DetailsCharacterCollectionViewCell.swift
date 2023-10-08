@@ -57,9 +57,9 @@ final class DetailsCharacterCollectionViewCell: UICollectionViewCell {
         }
     }
     
-    func setCell(viewModel: DetailsCharacterCellViewModel) {
+    func setCell(viewModel: LocationDetailsCharacterCellViewModel) {
         viewModel.registerForData { [weak self] data in
-                    self?.imageView.af.setImage(withURL: URL(string: data.image) ?? URL(string: "https://rickandmortyapi.com/api/character/avatar/1.jpeg")!,
+            self?.imageView.af.setImage(withURL: URL(string: data.image) ?? ApiConstants.shared.constantImageUrl,
                                                 imageTransition: .crossDissolve(0.8))
                     self?.nameLabel.text = data.name
                 }

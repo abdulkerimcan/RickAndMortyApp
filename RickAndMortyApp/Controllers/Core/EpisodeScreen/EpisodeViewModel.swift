@@ -22,11 +22,15 @@ protocol EpisodeViewModelProtocol {
 
 final class EpisodeViewModel {
     weak var view: EpisodeVCProtocol?
-    private lazy var service = Service()
+    private var service: Service
     var episodes: [Episode] = []
-    var apiInfo: GetAllEpisodes.Info? = nil
+    var apiInfo: Info? = nil
     var isLoadingMore = false
     var shouldShowSearchBar: Bool = false
+    
+    init(service: Service){
+        self.service = service
+    }
 }
 
 extension EpisodeViewModel: EpisodeViewModelProtocol {
@@ -40,7 +44,7 @@ extension EpisodeViewModel: EpisodeViewModelProtocol {
     }
     
     func searchEpisode(searchText: String) {
-        let url = "\(ApiURL.getUrl(endpoint: .episode))/?name=\(searchText)"
+        let url = "\(ApiConstants.shared.getUrl(endpoint: .episode))/?name=\(searchText)"
         service.fetch(url: url, expecting: GetAllEpisodes.self) {[weak self] result in
             guard let self = self else {return}
             switch result {
@@ -57,7 +61,7 @@ extension EpisodeViewModel: EpisodeViewModelProtocol {
     }
     
     func fetchInitialEpisodes() {
-        let url = ApiURL.getUrl(endpoint: .episode)
+        let url = ApiConstants.shared.getUrl(endpoint: .episode)
         service.fetch(url: url, expecting: GetAllEpisodes.self) { [weak self] result in
             guard let self = self else {
                 return

@@ -21,11 +21,15 @@ protocol CharacterViewModelProtocol {
 
 final class CharacterViewModel {
     weak var view: CharacterVCProtocol?
-    lazy var service = Service()
-    var apiInfo: GetAllCharacters.Info? = nil
+    private var service: Service
+    var apiInfo: Info? = nil
     var characters: [Character] = []
     var isLoadingMore = false
     var shouldShowSearchBar: Bool = false
+    
+    init(service: Service) {
+        self.service = service
+    }
     
 }
 
@@ -41,7 +45,7 @@ extension CharacterViewModel: CharacterViewModelProtocol {
     }
     
     func searchCharacter(searchText: String) {
-        let url = "\(ApiURL.getUrl(endpoint: .character))/?name=\(searchText)"
+        let url = "\(ApiConstants.shared.getUrl(endpoint: .character))/?name=\(searchText)"
         service.fetch(url: url, expecting: GetAllCharacters.self) {[weak self] result in
             guard let self = self else {return}
             switch result {
@@ -85,7 +89,7 @@ extension CharacterViewModel: CharacterViewModelProtocol {
     }
     
     func fetchInitialCharacters() {
-        let url = ApiURL.getUrl(endpoint: .character)
+        let url = ApiConstants.shared.getUrl(endpoint: .character)
         service.fetch(url: url, expecting: GetAllCharacters.self) { [weak self] result in
             guard let self = self else {
                 return

@@ -13,9 +13,8 @@ protocol EpisodeDetailsVCProtocol: AnyObject {
 }
 
 final class EpisodeDetailsVC: UIViewController {
-    let episode: Episode
     private var collectionView: UICollectionView!
-    private lazy var viewModel = EpisodeDetailsViewModel(episode: episode)
+    private var viewModel: EpisodeDetailsViewModel
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,8 +23,8 @@ final class EpisodeDetailsVC: UIViewController {
         viewModel.viewDidLoad()
         
     }
-    init(episode: Episode) {
-        self.episode = episode
+    init(viewModel: EpisodeDetailsViewModel) {
+        self.viewModel = viewModel
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -37,14 +36,14 @@ final class EpisodeDetailsVC: UIViewController {
 extension EpisodeDetailsVC: EpisodeDetailsVCProtocol {
     func navigateCharacterDetails(character: Character) {
         DispatchQueue.main.async {
-            let characterDetailsVC = CharacterDetailsVC(character: character)
+            let characterDetailsVC = CharacterDetailsVC(viewModel: CharacterDetailsViewModel(character: character))
             self.navigationController?.pushViewController(characterDetailsVC, animated: true)
         }
     }
     
     
     func configureCollectionView() {
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: EpisodeDetailsHelper.createEpisodeCompostionalLayout(viewModel: viewModel))
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: self.createDetailsCompostionalLayout(viewModel: viewModel))
         view.addSubview(collectionView)
         collectionView.dataSource = self
         collectionView.delegate = self
@@ -68,7 +67,9 @@ extension EpisodeDetailsVC: UICollectionViewDelegate, UICollectionViewDataSource
         case .information:
             return 1
         case .character(let viewmodels):
-            return viewmodels.count
+            return viewmodels?.count ?? 0
+        default:
+            return 0
         }
     }
     
@@ -79,13 +80,16 @@ extension EpisodeDetailsVC: UICollectionViewDelegate, UICollectionViewDataSource
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: EpisodeDetailsCollectionViewCell.identifier, for: indexPath) as? EpisodeDetailsCollectionViewCell else {
                 fatalError()
             }
-            cell.setCell(episode: episode)
+            cell.setCell(episode: viewModel.episode)
             return cell
         case .character(let viewmodels):
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsCharacterCollectionViewCell.identifier, for: indexPath) as? DetailsCharacterCollectionViewCell else {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: DetailsCharacterCollectionViewCell.identifier, for: indexPath) as? DetailsCharacterCollectionViewCell,let viewmodels = viewmodels else {
                 fatalError()
             }
             cell.setCell(viewModel: viewmodels[indexPath.item])
+            return cell
+        default:
+            let cell = UICollectionViewCell(frame: .zero)
             return cell
         }
     }
@@ -94,11 +98,16 @@ extension EpisodeDetailsVC: UICollectionViewDelegate, UICollectionViewDataSource
         let sectionType = viewModel.sections[indexPath.section]
         switch sectionType {
         case .character(let characters):
+            guard let characters = characters else {
+                return
+            }
             guard let character = characters[indexPath.item].character else {
                 return
             }
             viewModel.getDetail(character: character)
         case .information:
+            break
+        case .photo:
             break
         }
     }

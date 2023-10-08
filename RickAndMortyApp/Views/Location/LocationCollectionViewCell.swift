@@ -53,7 +53,7 @@ final class LocationCollectionViewCell: UICollectionViewCell {
         }
     }
     func setCell(location: Location) {
-        nameLabel.text = location.name
-        typeLabel.text = location.type
+        nameLabel.text = location._name
+        typeLabel.text = location._type
     }
 }

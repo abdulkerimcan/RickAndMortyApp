@@ -11,7 +11,7 @@ protocol CharacterDataSender {
     var image: String { get }
 }
 
-final class DetailsCharacterCellViewModel {
+final class LocationDetailsCharacterCellViewModel {
     private let characterUrl: URL?
     private var isFetching = false
     private lazy var service = Service()
@@ -57,11 +57,11 @@ final class DetailsCharacterCellViewModel {
     }
 }
 
-extension DetailsCharacterCellViewModel: Hashable, Equatable {
+extension LocationDetailsCharacterCellViewModel: Hashable, Equatable {
     func hash(into hasher: inout Hasher) {
             hasher.combine(self.characterUrl?.absoluteString ?? "")
         }
-    static func == (lhs: DetailsCharacterCellViewModel, rhs: DetailsCharacterCellViewModel) -> Bool {
+    static func == (lhs: LocationDetailsCharacterCellViewModel, rhs: LocationDetailsCharacterCellViewModel) -> Bool {
         return lhs.hashValue == rhs.hashValue
     }
     
